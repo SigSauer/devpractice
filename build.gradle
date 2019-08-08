@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.7.RELEASE")
+    }
+}
+
+group 'com.sigsauer'
+version '1.0-SNAPSHOT'
+
+configure(allprojects) { project ->
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+        compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+}
+
+project(':springlearning') {
+
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-mustache'
+        compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
+        testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    }
+}
