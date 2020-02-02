@@ -6,6 +6,7 @@ import com.sigsauer.devpractice.springlearning.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,17 +38,17 @@ public class GeneralController {
         return "welcome";
     }
 
-    /**
-     * Support page
-     *
-     * @param model pack of data which sending to view context
-     * @return name of mustache page file
-     */
-    @GetMapping("/support")
-    public String support(Map<String, Object> model) {
-        model.put("support", "SIG");
-        return "support";
-    }
+//    /**
+//     * Support page
+//     *
+//     * @param model pack of data which sending to view context
+//     * @return name of mustache page file
+//     */
+//    @GetMapping("/support")
+//    public String support(Map<String, Object> model) {
+//        model.put("support", "SIG");
+//        return "support";
+//    }
 
 
     /**
@@ -57,11 +58,16 @@ public class GeneralController {
      * @return page
      */
     @GetMapping("/general")
-    public String general(Map<String, Object> model) {
+        public String general(@RequestParam(required = false) String filter, Model model) {
         Iterable<Message> messages;
-        messages = messageRepository.findAll();
+        if(filter != null && !filter.isEmpty()) {
+            messages = messageRepository.findByArticle(filter);
+        } else {
+            messages = messageRepository.findAll();
+        }
 
-        model.put("messages", messages);
+        model.addAttribute("messages", messages);
+        model.addAttribute("filter", filter);
 
         return "general";
     }
@@ -85,25 +91,4 @@ public class GeneralController {
         return "redirect:/general";
 
     }
-
-    /**
-     * Filtering messages on General page
-     *
-     * @param filter
-     *
-     * @param model pack of data which sending to view context
-     * @return
-     */
-    @PostMapping("filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model) {
-        Iterable<Message> messages;
-        if(filter != null && !filter.isEmpty()) {
-            messages = messageRepository.findByArticle(filter);
-        } else {
-            messages = messageRepository.findAll();
-        }
-        model.put("messages", messages);
-        return "general";
-    }
-
 }

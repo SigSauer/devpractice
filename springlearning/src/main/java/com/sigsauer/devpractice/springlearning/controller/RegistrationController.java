@@ -25,12 +25,16 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User receivedUser, Map<String, Object> model) {
-        if(userRepository.findByEmail(receivedUser.getEmail()) != null) {
-            model.put("message", "This email already registered! You can restore account");
-            return "registration";
-        } else if(userRepository.findByUsername(receivedUser.getUsername()) != null) {
+//        if(userRepository.findByEmail(receivedUser.getEmail()) != null) {
+//            model.put("message", "This email already registered! You can restore account");
+//            return "registration";
+//        } else
+            if(userRepository.findByUsername(receivedUser.getUsername()) != null) {
             model.put("message", "This username already use! Choose another username");
-        } else {
+            } else {
+
+            receivedUser.setEmail(" ");
+
             receivedUser.setActive(true);
             receivedUser.setRoles(Collections.singleton(Role.USER));
             userRepository.save(receivedUser);
