@@ -1,8 +1,10 @@
 package com.sigsauer.devpractice.springlearning.controller;
 
 import com.sigsauer.devpractice.springlearning.domain.Message;
+import com.sigsauer.devpractice.springlearning.domain.User;
 import com.sigsauer.devpractice.springlearning.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ public class GeneralController {
     private MessageRepository messageRepository;
 
     /**
-     * ??
+     * Welcome page
      *
      * @param model pack of data which sending to view context
      * @return name of mustache page file
@@ -36,7 +38,7 @@ public class GeneralController {
     }
 
     /**
-     *
+     * Support page
      *
      * @param model pack of data which sending to view context
      * @return name of mustache page file
@@ -49,11 +51,10 @@ public class GeneralController {
 
 
     /**
-     *
-     *
+     *  General page
      *
      * @param model pack of data which sending to view context
-     * @return Clients Page
+     * @return page
      */
     @GetMapping("/general")
     public String general(Map<String, Object> model) {
@@ -66,26 +67,27 @@ public class GeneralController {
     }
 
     /**
-     *  Send parameters to filter of Clients
+     * Add messages on General page
      *
+     * @param user
      * @param article
      * @param text
      *
      * @param model pack of data which sending to view context
-     * @return Clients Page
+     * @return
      */
     @PostMapping("/general")
-    public String send(@RequestParam String article, @RequestParam String text, Map<String, Object> model) {
-        Message message = new Message( 0L, article, text);
+    public String send(@AuthenticationPrincipal User user,
+                           @RequestParam String article, @RequestParam String text, Map<String, Object> model) {
+        Message message = new Message(user, article, text);
         messageRepository.save(message);
-
         model.put("message", messageRepository.findAll());
-        return "general";
+        return "redirect:/general";
 
     }
 
     /**
-     *
+     * Filtering messages on General page
      *
      * @param filter
      *
@@ -100,7 +102,7 @@ public class GeneralController {
         } else {
             messages = messageRepository.findAll();
         }
-        model.put("clients", messages);
+        model.put("messages", messages);
         return "general";
     }
 

@@ -1,9 +1,6 @@
 package com.sigsauer.devpractice.springlearning.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Message {
@@ -11,7 +8,9 @@ public class Message {
     @GeneratedValue(strategy=GenerationType.TABLE)
     private Long id;
 
-    private Long userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 
     private String article;
 
@@ -20,10 +19,14 @@ public class Message {
     public Message() {
     }
 
-    public Message(Long userId, String article, String text) {
-        this.userId = userId;
+    public Message(User author, String article, String text) {
+        this.author = author;
         this.article = article;
         this.text = text;
+    }
+
+    public String getAuthorName() {
+        return author.getUsername();
     }
 
     public Long getId() {
@@ -34,12 +37,12 @@ public class Message {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getArticle() {

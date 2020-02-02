@@ -3,25 +3,44 @@ package com.sigsauer.devpractice.salestelegrambot;
 import org.json.JSONObject;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class Bot extends TelegramLongPollingBot {
     private final String BOT_USERNAME = "tcparser_bot";
     private final String BOT_TOKEN = "771505932:AAHRbOgKsQqPvIJWFvzV17N3x6QSmSxTq2U";
 
+    Scanner sc = new Scanner(System.in);
+
 
     @Override
     public void onUpdateReceived(Update update) {
-        messageController(update.getMessage());
+        String question = update.getMessage().getText();
+        System.out.println(question);
+        if(question.equals("/start")) {
+            send(update.getMessage().getChatId(), "Люблю тебя!");
+        }else {
+            System.out.println(":");
+            String answer = sc.nextLine();
+            send(update.getMessage().getChatId(),answer);
+        }
     }
 
-    private synchronized void messageController(Message message) {
-        if(message.getText().equals("/start")) send(message,"Hello, my friend!");
-    }
 
-    private void send(Message message, String text) {
-        SendMessage sendMessage = new SendMessage(message.getChatId(),text);
+    private synchronized
+    void send(Long chatId, String text) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.setText(text);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

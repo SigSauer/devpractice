@@ -32,7 +32,7 @@ public class RegistrationController {
             model.put("message", "This username already use! Choose another username");
         } else {
             receivedUser.setActive(true);
-            receivedUser.setRoles(Collections.singleton(Role.CONFIRMED));
+            receivedUser.setRoles(Collections.singleton(Role.USER));
             userRepository.save(receivedUser);
         }
         return "redirect:/login";
