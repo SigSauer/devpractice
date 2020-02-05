@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Bot extends TelegramLongPollingBot {
-    private final String BOT_USERNAME = "tcparser_bot";
-    private final String BOT_TOKEN = "771505932:AAHRbOgKsQqPvIJWFvzV17N3x6QSmSxTq2U";
+    private final String BOT_USERNAME = "";
+    private final String BOT_TOKEN = "";
 
     Scanner sc = new Scanner(System.in);
 
