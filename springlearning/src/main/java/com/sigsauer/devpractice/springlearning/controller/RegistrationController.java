@@ -19,7 +19,6 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration() {
-
         return "registration";
     }
 
@@ -31,9 +30,10 @@ public class RegistrationController {
 //        } else
             if(userRepository.findByUsername(receivedUser.getUsername()) != null) {
             model.put("message", "This username already use! Choose another username");
+            return "registration";
             } else {
 
-            receivedUser.setEmail(" ");
+            receivedUser.setEmail("email");
 
             receivedUser.setActive(true);
             receivedUser.setRoles(Collections.singleton(Role.USER));
