@@ -8,14 +8,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSendEngine {
-    static Map<String, String> login;
 
     public static void main(String[] args) {
-        login = JsonController.getJsonData("C:\\Users\\PDV00\\IdeaProjects\\devpractice\\src\\main\\resources\\email\\authentication.json");
+        Map<String, String> data = JsonController.getJsonData("src\\main\\resources\\email\\data.json");
 
-        String to = "danie2747@gmail.com";
-        String from = "john.mayer.19780525@gmail.com";
-        //get system properties
+        //set properties
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "465");
@@ -25,17 +22,17 @@ public class EmailSendEngine {
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(login.get("login"), login.get("password"));
+                return new PasswordAuthentication(data.get("login"), data.get("password"));
             }
         });
-        session.setDebug(true);
 
+        session.setDebug(true);
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("Subject");
-            message.setText("Text");
+            message.setFrom(new InternetAddress(data.get("sender")));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(data.get("receiver")));
+            message.setSubject("Title of Message");
+            message.setText("Text of Message");
 
 
             Transport.send(message);
