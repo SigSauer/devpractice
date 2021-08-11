@@ -5,6 +5,7 @@
 <@c.page>
     <div>
         <@l.logout />
+        <span><a href="/users">Users</a> </span>
     </div>
     <div>
         <form method="get" action="/general">

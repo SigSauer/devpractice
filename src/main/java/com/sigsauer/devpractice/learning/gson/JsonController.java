@@ -9,13 +9,13 @@ import java.util.Map;
 
 public class JsonController {
 
-    public static Map<String, String> getJsonData(String path) {
-        Map<String, String> values = null;
+    public static <T> T[] getJsonData(Class<T[]> t,String path) {
+        T[] values = null;
         BufferedReader br;
         Gson gson = new Gson();
         try {
             br = new BufferedReader(new FileReader(path));
-            values = gson.fromJson(br, Map.class);
+            values = gson.fromJson(br, t);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

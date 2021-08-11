@@ -2,6 +2,6 @@
 
 <@c.page>
     <div>Hello, user</div>
-    <a href="/general">Clients Page</a>
+    <a href="/general">General Page</a>
 </@c.page>
 

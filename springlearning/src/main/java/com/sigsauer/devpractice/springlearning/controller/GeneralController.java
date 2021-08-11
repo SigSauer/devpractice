@@ -58,7 +58,7 @@ public class GeneralController {
      * @return page
      */
     @GetMapping("/general")
-        public String general(@RequestParam(required = false) String filter, Model model) {
+        public String general(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages;
         if(filter != null && !filter.isEmpty()) {
             messages = messageRepository.findByArticle(filter);

@@ -1,5 +1,6 @@
 package com.sigsauer.devpractice.springlearning.service;
 
+import com.sigsauer.devpractice.springlearning.domain.User;
 import com.sigsauer.devpractice.springlearning.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         return userRepository.findByUsername(username);
     }
 }
